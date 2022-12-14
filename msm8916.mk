@@ -115,7 +115,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service \
-    android.hardware.drm@1.1-service.widevine \
     android.hardware.drm@1.4-service.clearkey
 
 # Encryption
@@ -163,17 +162,14 @@ PRODUCT_PACKAGES += \
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
-    android.hidl.manager@1.0 \
-    android.hidl.manager@1.0-java
+    android.hidl.manager@1.0
 
 #vndservicemanager needed to boot otherwise
 #init: Command 'start vndservicemanager' action=init (/system/etc/init/hw/init.rc:397) took 0ms and failed: service vndservicemanager not found
 #it gets stuck at bootanimation without vndservicemanager
 PRODUCT_PACKAGES += \
     libhidltransport \
-    libhidltransport.vendor \
     libhwbinder \
-    libhwbinder.vendor \
     vndservicemanager
 
 # Keylayout
