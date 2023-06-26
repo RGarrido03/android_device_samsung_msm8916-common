@@ -80,6 +80,35 @@ extern "C" camera_module_t HAL_MODULE_INFO_SYM __attribute__ ((visibility("defau
     .reserved = {0}, /* remove compilation warnings */
 };
 
+static int get_product_device()
+{
+    if (product_device != UNKNOWN)
+        return product_device;
+
+    std::string device = GetProperty("ro.product.device", "");
+
+    if (device == "gtesqltespr")
+        product_device = GTE;
+    else if (device == "gtelwifiue")
+        product_device = GTE;
+    else if (device == "gt510wifi")
+        product_device = GTE;
+    else if (device == "gt5note10wifi")
+        product_device = GTE;
+    else if (device == "gt510lte")
+        product_device = GTE;
+    else if (device == "gt58wifi")
+        product_device = GTE;
+    else if (device == "gt58ltetmo")
+        product_device = GTE;
+    else if (device == "gt58ltebmc")
+        product_device = GTE;
+    else
+        product_device = UNKNOWN;
+
+    return product_device;
+}
+
 typedef struct wrapper_camera_device {
     camera_device_t base;
     int camera_released;
