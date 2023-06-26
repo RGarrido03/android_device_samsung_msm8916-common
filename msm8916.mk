@@ -273,7 +273,6 @@ PRODUCT_PACKAGES += \
 # Rootdir
 PRODUCT_PACKAGES += \
     init.class_main.sh \
-    init.link_ril_db.sh \
     init.qcom.bt.sh \
     init.qcom.fm.sh \
     init.qcom.post_boot.sh \
