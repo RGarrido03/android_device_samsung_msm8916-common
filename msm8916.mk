@@ -69,7 +69,6 @@ PRODUCT_COPY_FILES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    libbase_shim \
     libbt-vendor
 
 PRODUCT_COPY_FILES += \
