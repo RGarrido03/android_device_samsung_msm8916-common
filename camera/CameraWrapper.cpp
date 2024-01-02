@@ -24,7 +24,7 @@
 #define LOG_NDEBUG 0
 
 #define LOG_TAG "CameraWrapper"
-#include <log/log.h>
+#include <utils/log.h>
 
 #include <utils/threads.h>
 #include <utils/String8.h>
@@ -33,11 +33,37 @@
 #include <camera/Camera.h>
 #include <camera/CameraParameters.h>
 
+#define BACK_CAMERA_ID 0
+#define FRONT_CAMERA_ID 1
+
+#define OPEN_RETRIES    10
+#define OPEN_RETRY_MSEC 40
+
+using namespace android;
+using android::base::GetProperty;
+
+enum {
+    UNKNOWN = -1,
+    GTE,
+};
+
+static int product_device = UNKNOWN;
+
 static const char PIXEL_FORMAT_YUV420SP_NV21E[] = "yuv420sp-nv21e";
+const char KEY_SUPPORTED_ISO_MODES[] = "iso-values";
+const char KEY_SAMSUNG_CAMERA_MODE[] = "cam_mode";
+const char KEY_ISO_MODE[] = "iso";
+const char KEY_ZSL[] = "zsl";
+static const char OFF[] = "off";
+const char KEY_CAMERA_MODE[] = "camera-mode";
+const char KEY_SUPPORTED_HFR_SIZES[] = "hfr-size-values";
+const char KEY_SUPPORTED_MEM_COLOR_ENHANCE_MODES[] = "mce-values";
+const char KEY_SUPPORTED_VIDEO_HIGH_FRAME_RATE_MODES[] = "video-hfr-values";
 
 static android::Mutex gCameraWrapperLock;
 static camera_module_t *gVendorModule = 0;
 
+static char** fixed_set_params = NULL;
 static camera_notify_callback gUserNotifyCb = NULL;
 static camera_data_callback gUserDataCb = NULL;
 static camera_data_timestamp_callback gUserDataCbTimestamp = NULL;
@@ -164,6 +190,13 @@ static char *camera_fixup_getparams(int id, const char *settings)
 
     /* Enforce video-snapshot-supported to true */
     params.set(android::CameraParameters::KEY_VIDEO_SNAPSHOT_SUPPORTED, "true");
+
+    if (!( get_product_device() == GTE)) {
+        // fix params here
+        if (id == BACK_CAMERA_ID) {
+            params.set(CameraParameters::KEY_SUPPORTED_FLASH_MODES, "auto,on,off,torch");
+        }
+    }
 
     android::String8 strParams = params.flatten();
     char *ret = strdup(strParams.string());
