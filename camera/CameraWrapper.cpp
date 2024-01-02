@@ -26,6 +26,7 @@
 #define LOG_TAG "CameraWrapper"
 #include <cutils/log.h>
 
+#include <android-base/properties.h>
 #include <utils/threads.h>
 #include <utils/String8.h>
 #include <hardware/hardware.h>
@@ -63,7 +64,6 @@ const char KEY_SUPPORTED_VIDEO_HIGH_FRAME_RATE_MODES[] = "video-hfr-values";
 static android::Mutex gCameraWrapperLock;
 static camera_module_t *gVendorModule = 0;
 
-static char** fixed_set_params = NULL;
 static camera_notify_callback gUserNotifyCb = NULL;
 static camera_data_callback gUserDataCb = NULL;
 static camera_data_timestamp_callback gUserDataCbTimestamp = NULL;
